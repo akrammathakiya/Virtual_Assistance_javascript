@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Protest+Guerrilla&display=swap');
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+    body{
+        background-color: rgb(149, 123, 189);
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        flex-direction: column;
+    }      
+    #logo{
+        margin-top: 25px;
+       width: 50vh;
+       mix-blend-mode: multiply;
+    }
+    h1{
+        color: white;
+        font-family: "Protest Guerrilla", sans-serif;
+    }
+    #name{
+        color:rgb(83, 60, 186);
+        font-size:40px;
+    }
+    #va{
+        color:rgb(31, 47, 174);
+        font-size:40px;
+    }
+    #voice{
+        width: 150px;
+        display: none;
+    }
+    #btn{
+        color:white;    
+        width: 30%;
+        background: linear-gradient(to right,rgb(153, 132, 244),rgb(31, 47, 174));
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 20px;
+        border-radius: 15px;
+        box-shadow: 2px 2px 10px rgb(153, 132, 244),2px 2px 10px rgb(31, 47, 174);
+        border: none;
+        transition: all 0.5s;
+        cursor: pointer;
+    }
+    #btn:hover{
+        box-shadow: 2px 2px 20px rgb(153, 132, 244),2px 2px 20px rgb(31, 47, 174);
+        letter-spacing: 5px;
+    }
+    #ppp{
+        color: black;
+    }
+
+    </style>
+</head>
+<body>
+    <img src="logo.jpg" id="logo" alt="logo">
+    <h1>I'm <span id="name">Parcel</span>,Your <span id="va">Virtual Assistance</span></h1>
+    <img src="voice.gif" alt="voice" id="voice">
+    <button id="btn"><img src="mic.svg" alt="mic"><span id="content">Click Here to talk to me</span></button>
+    <h1 id="ppp"></h5>
+</body>
+<script>
+
+let btn = document.getElementById("btn");
+let content = document.getElementById("content");
+let paragrapgh = document.getElementById("ppp")
+
+function speak(text) {
+    let text_speak = new SpeechSynthesisUtterance(text);
+    text_speak.rate = 1;
+    text_speak.pitch = 1;
+    text_speak.volume = 1;
+    text_speak.lang = "hi-GB";
+    window.speechSynthesis.speak(text_speak);
+    paragrapgh.innerText = text;  // Display the spoken text on the screen
+}
+
+let speechRecognition =
+  window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = new speechRecognition();
+
+recognition.onresult = (event) => {
+    let currentIndex = event.resultIndex;
+    let transcript = event.results[currentIndex][0].transcript;
+    content.innerText = transcript;  // Display the user's speech on the screen
+    takeCommand(transcript.toLowerCase());
+};
+
+btn.addEventListener("click", () => {
+    recognition.start();
+});
+
+function takeCommand(message) {
+    if (message.includes("hello") || message.includes("hey")) {
+        let response = "Hello sir, what can I help you with?";
+        speak(response);
+    } 
+    else if (message.includes("who are you") || message.includes("hu r u")) {
+        let response = "I am a virtual assistant, created by Mathakiya sir.";
+        speak(response);
+    } 
+    else if (message.includes("open youtube") || message.includes("parcel open youtube")) {
+        let response = "Opening YouTube, please wait...";
+        speak(response);
+        window.open("https://www.youtube.com/");
+    } 
+    else {
+        let response = "Sorry, I didn't understand that. Could you please repeat?";
+        speak(response);
+    }
+
+    //write your own custmize function for creating more efficient
+   
+}
+
+</script>
+</html>
